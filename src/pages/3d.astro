@@ -1,0 +1,179 @@
+---
+import Layout from "../components/Layout.astro"; 
+// Import your main page layout that includes navbar, footer, Bootstrap, and Necron theme styling.
+
+/** DATA — replace with real assets later */
+const hero = {
+  title: "3D Artworks",
+  subtitle: "Hard-surface • Environment • Procedural",
+  blurb:
+    "Selected renders emphasizing hard-surface workflows, emissive glyph language, and environment studies.",
+};
+// ↑ Defines content for the hero section — what title, subtitle, and short description to show on top of the page.
+
+const tags = ["All", "Hard-Surface", "Environment", "Procedural"];
+// ↑ Category filters (currently visual only). You can later make them clickable filters via JavaScript.
+
+const artworks = [
+  // ↑ Array of your portfolio pieces for this gallery page.
+  // Each object represents one 3D artwork card with title, image, tag, and short caption.
+  { title: "Cryptek Relic", img: "img/blank.jpg", tag: "Hard-Surface", caption: "Kitbash + emissive glyphs." },
+  { title: "Monolith Reboot", img: "img/blank.jpg", tag: "Environment", caption: "Scale + volumetrics." },
+  { title: "Tesseract Node", img: "img/blank.jpg", tag: "Procedural", caption: "Parametric truss + glow." },
+  { title: "Scarab Bay", img: "img/blank.jpg", tag: "Environment", caption: "Desert plate + fog." },
+  { title: "Obelisk Study", img: "img/blank.jpg", tag: "Hard-Surface", caption: "Surface breakup test." },
+  { title: "Conduit Array", img: "img/blank.jpg", tag: "Procedural", caption: "Array modifiers + OSL look." },
+];
+// ↑ You can later load this data from an external /data/artworksData.ts file if you prefer to separate content from code.
+---
+
+<style>
+  /* ===== LOCAL PAGE STYLE BLOCK =====
+     This CSS affects only this page and overrides or extends global theme styles.
+     It defines how your hero, cards, and table look visually.
+  */
+
+  /* HERO (top banner section) */
+  .hero-grid { display:grid; grid-template-columns: 1.1fr 1fr; gap:2rem; align-items:center; }
+  @media (max-width: 992px){ .hero-grid { grid-template-columns: 1fr; } }
+  /* ↑ Creates a 2-column layout for desktop (image left, text right), collapses to 1 column on mobile. */
+
+  .hero-art { position:relative; border-radius:16px; overflow:hidden; }
+  .hero-art img { width:100%; height:100%; object-fit:cover; display:block; }
+  /* ↑ Styles your hero image container — rounded edges, full coverage scaling. */
+
+  .hero-bar { position:absolute; top:0; bottom:0; width:16%;
+    background: linear-gradient(180deg, rgba(12,229,134,.28), rgba(12,229,134,.08));
+    border-left:1px solid rgba(12,229,134,.25); border-right:1px solid rgba(12,229,134,.12);
+    pointer-events:none;
+  }
+  /* ↑ Adds glowing green “Necron energy” vertical strips overlay — decorative only. */
+  .hero-bar.b1{ left:10%; } .hero-bar.b2{ left:32%; } .hero-bar.b3{ left:54%; }
+
+  /* FILTER CHIPS */
+  .chip { display:inline-block; padding:.4rem .8rem; border-radius:999px;
+    border:1px solid rgba(12,229,134,.30); color:var(--text); margin:.25rem .35rem .25rem 0;
+  }
+  .chip.is-active { background: rgba(12,229,134,.18); border-color: rgba(12,229,134,.55); }
+  /* ↑ Styles category “chips” (small oval tags). The first one (“All”) uses .is-active for emphasis. */
+
+  /* SECTION BACKGROUND BAND */
+  .band { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)); border-radius:16px; }
+  /* ↑ Gives sections (gallery + pipeline) a translucent dark gradient background like your index abilities section. */
+
+  /* GALLERY CARD GRID */
+  .card-necron-dark {
+    background: rgba(16,18,20,.86);
+    border:1px solid rgba(12,229,134,.18);
+    border-radius:14px; overflow:hidden;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card-necron-dark:hover {
+    transform: translateY(-3px);
+    border-color: rgba(12,229,134,.38);
+    box-shadow: 0 0 24px rgba(12,229,134,.18);
+  }
+  /* ↑ Each artwork card uses subtle glow/hover motion and emerald border styling. */
+
+  .media { width:100%; aspect-ratio: 16/9; object-fit:cover; display:block; opacity:.9; }
+  .body { padding:1rem 1.1rem 1.25rem; }
+  .tag { font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:#3dffae; }
+  /* ↑ Sets proportions and font styling inside each card. */
+
+  /* TOOLING TABLE STYLES */
+  .spec-table { width:100%; border-collapse:collapse; }
+  .spec-table th, .spec-table td { padding:.6rem .75rem; border-bottom:1px solid rgba(12,229,134,.18); }
+  .spec-table th { color:#0CE586; font-weight:600; }
+  /* ↑ Defines look for the optional table at the bottom (lists tools and workflow). */
+</style>
+
+<Layout title={`Tanawat // ${hero.title}`} description={hero.subtitle}>
+  <!-- Wraps the entire page inside your global Layout component -->
+  
+  <!-- ===== HERO SECTION ===== -->
+  <section class="panel p-4 p-lg-5 mb-5">
+    <!-- “panel” = your standard content box; Bootstrap padding classes (p-4, p-lg-5) handle spacing -->
+    <div class="hero-grid">
+      <div class="hero-art">
+        <img src="img/blank.jpg" alt="3D hero placeholder" loading="lazy" />
+        <!-- ↑ Replace this with your actual hero image, e.g., “img/artworks/hero.jpg” -->
+      </div>
+      <div>
+        <!-- Right-hand text block -->
+        <h2 class="text-muted m-0">{hero.subtitle}</h2>
+        <h1 class="necron-glow m-0">{hero.title}</h1>
+        <p class="mt-3 mb-4">{hero.blurb}</p>
+
+        <div aria-label="Tags">
+          {tags.map((t, i) => (
+            <span class={`chip ${i === 0 ? "is-active" : ""}`}>{t}</span>
+            // ↑ Loops over the “tags” array and renders each as a chip.
+            // The first chip (“All”) gets a highlight using the conditional class.
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY SECTION ===== -->
+  <section class="band panel p-4 p-lg-5 mb-5">
+    <!-- The translucent band container for all artwork cards -->
+    <div class="row g-3 g-lg-4">
+      {artworks.map((a) => (
+        // ↑ Loops through all artworks in the array and outputs one card per artwork.
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card-necron-dark">
+            <img class="media" src={a.img} alt={a.title} loading="lazy" />
+            <div class="body">
+              <h5 class="mb-1">{a.title}</h5>
+              <div class="tag mb-2">{a.tag}</div>
+              <p class="text-muted mb-0">{a.caption}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ===== PIPELINE & TOOLS SECTION ===== -->
+  <section class="panel p-4 p-lg-5">
+    <!-- Optional informational section for describing your production pipeline -->
+    <h3 class="mb-3">Pipeline & Tools</h3>
+    <div class="band p-3" style="border-radius:12px;">
+      <div class="table-responsive">
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Tools</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Each row describes one part of your 3D workflow -->
+            <tr>
+              <td>Modeling</td>
+              <td>Blender (HardOps, BoxCutter)</td>
+              <td>Non-destructive bevel + boolean workflow.</td>
+            </tr>
+            <tr>
+              <td>Shading</td>
+              <td>Blender (Cycles), Substance 3D</td>
+              <td>Metal/rough pipeline; emissive glyph masks.</td>
+            </tr>
+            <tr>
+              <td>Rendering</td>
+              <td>Cycles</td>
+              <td>Adaptive sampling, light path cuts.</td>
+            </tr>
+            <tr>
+              <td>Post</td>
+              <td>Photoshop / After Effects</td>
+              <td>Glows, depth fog, final grading.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Layout>

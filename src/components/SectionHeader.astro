@@ -1,0 +1,7 @@
+---
+const { title, subtitle } = Astro.props;
+---
+<div class="mb-4">
+<h1 class="necron-glow">{title}</h1>
+{subtitle && <p class="text-muted">{subtitle}</p>}
+</div>

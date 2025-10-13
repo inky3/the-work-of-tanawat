@@ -1,0 +1,23 @@
+---
+const { items = [] } = Astro.props;
+---
+<div class="row g-3">
+{items.map((m) => (
+<div class="col-12 col-sm-6 col-lg-4">
+<div class="card card-necron h-100">
+<div class="ratio ratio-16x9">
+<a href={m.src} target="_blank" rel="noopener">
+<img src={m.thumb ?? m.src} alt={m.title} loading="lazy" class="w-100" style="object-fit:cover; border-top-left-radius:.375rem; border-top-right-radius:.375rem;" />
+</a>
+</div>
+<div class="card-body">
+<h5 class="card-title">{m.title}</h5>
+{m.caption && <p class="card-text text-muted">{m.caption}</p>}
+{m.tags && <div class="d-flex flex-wrap gap-2">
+{m.tags.map((t) => <span class="figure-chip">{t}</span>)}
+</div>}
+</div>
+</div>
+</div>
+))}
+</div>
