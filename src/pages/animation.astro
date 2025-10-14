@@ -3,13 +3,13 @@ import Layout from "../components/Layout.astro";
 
 /** DATA — replace with your real YouTube IDs later */
 const hero = {
-  title: "Animation & Motion",
-  subtitle: "Logo Reveals • FX • Compositing",
+  title: "3D Animation & Motion",
+  subtitle: "",
   blurb:
-    "Selected motion pieces exploring glyph-driven identity, glitch passes, and cinematic compositing workflows.",
+    "งาน animation ส่วนใหญ่มักเป็นงานรูปแบบฝึกเพื่อส่งอาจารย์ตอนเรียนอยู่ปี 3 แต่ก็มีงานบางส่วนที่ทำขึ้นมาเพื่อโชว์ใน portfolio ด้วยเช่นกัน",
 };
 
-const tags = ["All", "Logo", "FX", "Compositing", "Reel"];
+const tags = [];
 
 /** Use YouTube video IDs (the part after https://youtu.be/ or v=) */
 const videos = [
@@ -113,7 +113,7 @@ const yt = (id: string) =>
   </section>
 
   <!-- ===== OPTIONAL CTA ===== -->
-  <section class="panel p-4 p-lg-5">
+  <!-- <section class="panel p-4 p-lg-5">
     <div class="band p-4" style="border-radius:12px;">
       <h3 class="mb-2">Need the full reel?</h3>
       <p class="text-muted mb-3">Watch the complete showcase on my YouTube channel or reach out for project-specific cuts.</p>
@@ -122,5 +122,5 @@ const yt = (id: string) =>
         <a class="btn btn-outline-light" style="border-color: rgba(12,229,134,.35)" href="mailto:ink@example.com">Contact Me</a>
       </div>
     </div>
-  </section>
+  </section> -->
 </Layout>
