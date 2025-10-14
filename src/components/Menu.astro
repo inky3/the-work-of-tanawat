@@ -1,0 +1,179 @@
+---
+/**
+ * Drop-in mobile menu (no dependencies)
+ * - Neon Necron button
+ * - Slide-down panel + backdrop
+ * - ESC to close, click outside to close
+ */
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/3d", label: "3D Artworks" },
+  { href: "/animation", label: "Animation & Motion" },
+  { href: "/paint", label: "Painted Figures" },
+  { href: "/about", label: "About" },
+];
+---
+<nav class="necron-nav" aria-label="Primary">
+  <!-- Brand -->
+  <a class="brand" href="/">Ink<span class="dot">•</span>Gallery</a>
+
+  <!-- Desktop links -->
+  <ul class="links">
+    {links.map(l => <li><a href={l.href}>{l.label}</a></li>)}
+  </ul>
+
+  <!-- Mobile toggle -->
+  <button
+    id="necronToggle"
+    class="toggle"
+    type="button"
+    aria-controls="necronDrawer"
+    aria-expanded="false"
+    aria-label="Open menu"
+  >
+    <span class="bars" aria-hidden="true">
+      <i></i><i></i><i></i>
+    </span>
+  </button>
+</nav>
+
+<!-- Drawer + backdrop -->
+<div id="necronBackdrop" class="backdrop" hidden></div>
+<div id="necronDrawer" class="drawer" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
+  <ul class="drawer-list">
+    {links.map(l => <li><a class="drawer-link" href={l.href}>{l.label}</a></li>)}
+  </ul>
+</div>
+
+<script>
+  // Tiny controller (no framework)
+  (() => {
+    const btn = document.getElementById("necronToggle");
+    const drawer = document.getElementById("necronDrawer");
+    const backdrop = document.getElementById("necronBackdrop");
+
+    const open = () => {
+      drawer.hidden = false;
+      backdrop.hidden = false;
+      requestAnimationFrame(() => {
+        drawer.classList.add("is-open");
+        backdrop.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+      });
+    };
+
+    const close = () => {
+      drawer.classList.remove("is-open");
+      backdrop.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+      const onEnd = () => {
+        drawer.hidden = true;
+        backdrop.hidden = true;
+        drawer.removeEventListener("transitionend", onEnd);
+      };
+      drawer.addEventListener("transitionend", onEnd);
+    };
+
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      expanded ? close() : open();
+    });
+
+    backdrop.addEventListener("click", close);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+
+    // Close after clicking a link
+    drawer.addEventListener("click", (e) => {
+      const a = e.target.closest("a");
+      if (a) close();
+    });
+  })();
+</script>
+
+<style>
+  :root {
+    --necron: #0CE586;         /* neon green */
+    --necron-deep: #0aa86b;
+    --bg-900: #0d1116;         /* app bar background */
+    --bg-800: #141a22;
+    --text-100: #e9eef2;
+    --text-400: #a7b0b7;
+    --ring: rgba(12,229,134,.35);
+    --shadow: 0 8px 30px rgba(0,0,0,.25);
+  }
+
+  /* Top bar */
+  .necron-nav {
+    position: sticky; top: 0; z-index: 40;
+    display: grid; grid-template-columns: 1fr auto auto; gap: 1rem;
+    align-items: center; padding: .75rem 1rem;
+    background: linear-gradient(180deg, var(--bg-900), var(--bg-800));
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .brand {
+    color: var(--text-100); font-weight: 700; letter-spacing: .02em; text-decoration: none;
+  }
+  .brand .dot { color: var(--necron); }
+
+  /* Desktop links */
+  .links { list-style:none; margin:0; padding:0; display:none; gap: 1rem; }
+  .links a { color: var(--text-400); text-decoration:none; padding:.3rem .5rem; border-radius:8px; transition: color .2s ease, background .2s ease; }
+  .links a:hover { color: var(--text-100); background: rgba(255,255,255,.04); }
+
+  /* Neon toggle */
+  .toggle {
+    justify-self: end;
+    appearance:none; border:none; cursor:pointer;
+    background: var(--necron); color:#052d22;
+    border-radius: 14px; padding: .55rem .7rem;
+    box-shadow: 0 8px 22px rgba(12,229,134,.25);
+    transition: transform .1s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .toggle:hover { background: #10f095; box-shadow: 0 10px 26px rgba(12,229,134,.35); }
+  .toggle:active { transform: translateY(1px); }
+  .toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+  .bars { display:inline-grid; gap: 4px; }
+  .bars i { display:block; width: 22px; height: 2px; background: #083d2f; border-radius: 2px; }
+
+  /* Drawer + backdrop */
+  .backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.35);
+    opacity: 0; transition: opacity .18s ease;
+    z-index: 39;
+  }
+  .drawer {
+    position: fixed; left: 0; right: 0; top: 0;
+    transform: translateY(-16px); opacity: 0;
+    background: linear-gradient(180deg, var(--bg-900), var(--bg-800));
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    box-shadow: var(--shadow);
+    padding: 1rem 1rem 1.25rem;
+    z-index: 40;
+    transition: transform .22s ease, opacity .22s ease;
+  }
+  .drawer.is-open { transform: translateY(0); opacity: 1; }
+  .backdrop.is-open { opacity: 1; }
+
+  .drawer-list { list-style:none; margin:0; padding: .25rem 0 0; display:grid; gap:.35rem; }
+  .drawer-link {
+    display:block; padding:.65rem .75rem; border-radius:10px;
+    color: var(--text-100); text-decoration:none;
+    border: 1px solid transparent;
+    transition: background .18s ease, border-color .18s ease, transform .12s ease;
+  }
+  .drawer-link:hover {
+    background: rgba(12,229,134,.08);
+    border-color: rgba(12,229,134,.22);
+    transform: translateX(2px);
+  }
+
+  /* Responsive: show desktop links ≥ 992px */
+  @media (min-width: 992px) {
+    .links { display:flex; }
+    .toggle, .drawer, .backdrop { display: none !important; }
+    .necron-nav { grid-template-columns: auto 1fr auto; }
+    .links { justify-self: end; }
+  }
+</style>

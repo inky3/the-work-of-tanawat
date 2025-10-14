@@ -1,5 +1,6 @@
 ---
 const { head, description } = Astro.props;
+import NecronMenu from "../components/NecronMenu.astro";
 ---
 
 <!doctype html>
@@ -137,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
 
   <body>
+    <NecronMenu />
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
