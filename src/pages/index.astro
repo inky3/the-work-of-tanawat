@@ -18,9 +18,9 @@ const abilities = [
 ];
 
 const highlights = [
-  { img: "img/blank.jpg", title: "3D Artworks",    role: "Hard-Surface / Environments", link: "/3d" },
-  { img: "img/blank.jpg", title: "Animation & Motion", role: "Logo / FX / Compositing",   link: "/animation" },
-  { img: "img/blank.jpg", title: "Painted Figures",    role: "OSL / Edge Highlights",     link: "/paint" },
+  { img: "img/blank.jpg", title: "3D Artworks",    role: "Hard-Surface / Environments", link: "/the-work-of-tanawat/3d" },
+  { img: "img/blank.jpg", title: "Animation & Motion", role: "Logo / FX / Compositing",   link: "/the-work-of-tanawat/animation" },
+  { img: "img/blank.jpg", title: "Painted Figures",    role: "OSL / Edge Highlights",     link: "/the-work-of-tanawat/warhammer" },
 ];
 ---
 
@@ -70,7 +70,7 @@ const highlights = [
     <div class="hero-wrap">
       <!-- Left: portrait w/ layered bars -->
       <div class="img-stack">
-        <img src="img/blank.jpg" alt="Profile placeholder" loading="lazy" />
+        <img src="img/profile.jpg" alt="Profile placeholder" loading="lazy" />
       </div>
 
       <!-- Right: copy (no dots) -->
@@ -87,9 +87,9 @@ const highlights = [
         <div class="d-flex flex-wrap gap-2 mb-4">
           <span class="figure-chip">{profile.location}</span>
           <a class="figure-chip" href={`mailto:${profile.email}`}>Contact</a>
-          <a class="figure-chip" href="/3d">3D</a>
-          <a class="figure-chip" href="/animation">Motion</a>
-          <a class="figure-chip" href="/warhammer">Figures</a>
+          <a class="figure-chip" href="/the-work-of-tanawat/3d">3D</a>
+          <a class="figure-chip" href="/the-work-of-tanawat/animation">Motion</a>
+          <a class="figure-chip" href="/the-work-of-tanawat/warhammer">Figures</a>
         </div>
 
         <div class="d-flex gap-2">
@@ -127,7 +127,7 @@ const highlights = [
           <a class="highlight-card highlight" href={h.link}>
             <img class="highlight-media" src={h.img} alt={h.title} loading="lazy" />
             <div class="highlight-body">
-              <h5 class="mb-1">{h.title}</h5>
+              <h5 class="mb-1 text">{h.title}</h5>
               <div class="role mb-2">{h.role}</div>
               <p class="lable mb-0">Tap to view the full collection.</p>
             </div>
@@ -137,3 +137,7 @@ const highlights = [
     </div>
   </section>
 </Layout>
+
+<style>
+  .text { color: #f0f0f0; }
+</style>
