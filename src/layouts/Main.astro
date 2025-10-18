@@ -1,245 +1,133 @@
----
-const { head, description } = Astro.props;
-import NecronMenu from "../components/NecronMenu.astro";
----
+<!-- Toggle button -->
+<button
+  id="necron-toggle"
+  class="necron-btn"
+  aria-controls="necron-drawer"
+  aria-expanded="false"
+  aria-label="Open menu"
+>
+  <span class="bars" aria-hidden="true"></span>
+</button>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>my work</title>
-  </head>
-    <!-- Bootstrap JS (kept) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Drawer + scrim -->
+<div id="necron-scrim" class="necron-scrim" hidden></div>
 
-    <!-- Active-nav + optional widgets -->
-    <script defer>
-      document.addEventListener("DOMContentLoaded", () => {
-        /** ---------------------------
-         * Utility: normalize base path
-         * --------------------------- */
-        const basePath = "/the.gallery"; // GitHub Pages subfolder
-        const stripBase = (href) => {
-          if (!href) return "/";
-          let out = href;
-          if (out.startsWith(basePath)) out = out.slice(basePath.length);
-          out = out.replace(/\/+$/, ""); // trim trailing slash
-          return out === "" ? "/" : out;
-        };
-        /** ---------------------------
-         * OPTIONAL: Filter nav (guarded)
-         * --------------------------- */
-        const filterNav = document.getElementById("filterNav");
-        const cards = document.querySelectorAll(".gallery-card");
-        if (filterNav && cards.length) {
-          filterNav.addEventListener("click", (e) => {
-            if (e.target.tagName !== "A") return;
-            e.preventDefault();
-
-            filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
-            e.target.classList.add("active");
-
-            const filter = e.target.getAttribute("data-filter");
-            cards.forEach((card) => {
-              const cat = card.dataset.category;
-              if (filter === "all" || cat === filter) {
-                card.classList.remove("hide");
-              } else {
-                card.classList.add("hide");
-              }
-            });
-          });
-        }
-
-        /** ---------------------------
-         * OPTIONAL: Section indicator (guarded)
-         * --------------------------- */
-        const indicator = document.querySelector(".indicator");
-        const navline = document.querySelector(".navline");
-        if (indicator && navline) {
-          const navLinks = navline.querySelectorAll("a");
-          const moveIndicator = (el) => {
-            const linkRect = el.getBoundingClientRect();
-            const parentRect = navline.getBoundingClientRect();
-            indicator.style.width = `${linkRect.width}px`;
-            indicator.style.left = `${linkRect.left - parentRect.left}px`;
-          };
-          const activeLink = navline.querySelector("a.active");
-          if (activeLink) moveIndicator(activeLink);
-
-          navLinks.forEach((l) =>
-            l.addEventListener("click", (e) => {
-              // allow navigation in production; prevent only if testing animations
-              // e.preventDefault();
-              navLinks.forEach((x) => x.classList.remove("active"));
-              e.currentTarget.classList.add("active");
-              moveIndicator(e.currentTarget);
-            })
-          );
-          window.addEventListener("resize", () => {
-            const currentActive = navline.querySelector("a.active");
-            if (currentActive) moveIndicator(currentActive);
-          });
-        }
-      });
-      // Prevent the dropdown toggle from scrolling to top when clicked
-document.addEventListener("DOMContentLoaded", () => {
-  const basePath = "/the.gallery";
-  const stripBase = (href) => {
-    if (!href) return "/";
-    let out = href;
-    if (out.startsWith(basePath)) out = out.slice(basePath.length);
-    out = out.replace(/\/+$/, "");
-    return out === "" ? "/" : out;
-  };
-  const current = stripBase(window.location.pathname);
-
-  // Reset nav
-  document.querySelectorAll(".navbar-nav .nav-link, .dropdown-item").forEach(el => {
-    el.classList.remove("active");
-    el.removeAttribute("aria-current");
-  });
-
-  // Highlight child dropdown first
-  let matchedChild = false;
-  document.querySelectorAll(".dropdown-menu .dropdown-item").forEach(item => {
-    const href = stripBase(item.getAttribute("href"));
-    if (href && href === current) {
-      matchedChild = true;
-      item.classList.add("active");
-      item.setAttribute("aria-current", "page");
-    }
-  });
-
-  // If child matched, highlight dropdown toggle
-  if (matchedChild) {
-    const toggle = document.querySelector(".nav-item.dropdown > .nav-link.dropdown-toggle");
-    if (toggle) toggle.classList.add("active");
-  } else {
-    // Highlight top-level
-    document.querySelectorAll('.navbar-nav > .nav-item > .nav-link:not(.dropdown-toggle)').forEach(link => {
-      const href = stripBase(link.getAttribute("href"));
-      if (href === current) {
-        link.classList.add("active");
-        link.setAttribute("aria-current", "page");
-      }
-    });
-
-    // Special case: /gallery itself
-    if (current.startsWith("/gallery")) {
-      const toggle = document.querySelector(".nav-item.dropdown > .nav-link.dropdown-toggle");
-      if (toggle) toggle.classList.add("active");
-    }
-  }
-});
-    </script>
-
-  <body>
-    <NecronMenu />
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/">my work</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <!-- NOTE: no hard-coded 'active' anywhere below -->
-            <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/the.gallery/about">About</a>
-            </li>
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Gallery
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/the.gallery/gallery/poster">Poster</a></li>
-                <li><a class="dropdown-item" href="/the.gallery/gallery/terrarium">Terrarium</a></li>
-                <li><a class="dropdown-item" href="/the.gallery/gallery/photography">Photography</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Hero -->
-    <header class="bg-dark text-white text-center py-5">
-      <div class="container">
-        <h1 class="display-4">{head}</h1>
-        <p class="lead">{description}</p>
-      </div>
-    </header>
-
-    <!-- Page slot -->
-    <section class="py-5 container">
-      <slot />
-    </section>
-
-    <!-- Footer -->
-        <footer class="bg-dark text-white py-4 mt-5 footer-padding">
-      <div class="container">
-        <div class="row">
-          <div class="col-md mb footer-text justify-content-center justify-content-md-start">
-            <h5>my work</h5>
-            <p >
-              This is the gallery of one person who just want to share something for fun, some might look beautiful, some might not. 
-              But all are made with passion and love. I have many kind of thing in this website and looking forward for more, You can kindly 
-              support me by sharing this website to your friends. Thank you for visiting.
-            </p>
-          </div>
-          <div class="col-md mb footer-text">
-            <h5>Contact Us</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-white">About</a></li>
-              <li><a href="#" class="text-white">Event</a></li>
-              <li><a href="#" class="text-white">Gallery</a></li>
-              <li><a href="#" class="text-white">Pages</a></li>
-              <li><a href="#" class="text-white">Blog</a></li>
-              <li><a href="#" class="text-white">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
-</html>
+<aside id="necron-drawer" class="necron-drawer" hidden aria-hidden="true">
+  <nav class="necron-nav" aria-label="Necron quick nav">
+    <a href="/" class="necron-link">Home</a>
+    <a href="/the.gallery/" class="necron-link">The.Gallery</a>
+    <a href="/the.gallery/about" class="necron-link">About</a>
+    <hr />
+    <a href="/the.gallery/gallery/poster" class="necron-link">Posters</a>
+    <a href="/the.gallery/gallery/photography" class="necron-link">Photography</a>
+    <a href="/the.gallery/gallery/terrarium" class="necron-link">Terrarium</a>
+  </nav>
+</aside>
 
 <style>
-  html, body { margin: 0; width: 100%; height: 100%; }
-
-  /* Cards */
-  .gallery-card { transition: transform 0.4s ease, opacity 0.4s ease; }
-  .hide { opacity: 0; transform: translateX(-50px); pointer-events: none; position: absolute; }
-
-  /* Active colors */
-  .navbar-nav .nav-link.active,
-  .navbar-nav .dropdown-toggle.active {
-    color: #fff !important;
+  :root {
+    --necron:#0CE586;            /* glow green */
+    --panel:#0f1113;              /* drawer bg */
   }
 
-  .footer-text {
-    color: #ccc;
-    font-size: 14px;
+  /* Floating, glowing button (top-right) */
+  .necron-btn{
+    position:fixed; top:14px; right:18px;
+    z-index:1100;
+    min-width:52px; height:40px; padding:0 14px;
+    border:none; border-radius:12px;
+    background:var(--necron);
+    box-shadow:0 0 22px rgba(12,229,134,.55);
+    display:grid; place-items:center;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .2s ease, opacity .2s ease;
   }
+  .necron-btn:hover{ transform:translateY(-1px); box-shadow:0 0 26px rgba(12,229,134,.7); }
+  .necron-btn:active{ transform:translateY(0); }
+  .necron-btn:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
 
-  .footer-padding {
-    padding: 0px 20px;
+  /* Three bars icon */
+  .bars, .bars::before, .bars::after{
+    display:block; width:22px; height:3px; border-radius:2px; background:#fff; position:relative;
+    transition:transform .2s ease, opacity .2s ease;
   }
+  .bars::before, .bars::after{ content:""; position:absolute; left:0; }
+  .bars::before{ top:-7px; } .bars::after{ top:7px; }
+
+  /* Scrim */
+  .necron-scrim{
+    position:fixed; inset:0; z-index:1090; background:rgba(0,0,0,.36);
+    opacity:0; pointer-events:none; transition:opacity .18s ease;
+  }
+  .necron-scrim.is-open{ opacity:1; pointer-events:auto; }
+
+  /* Drawer */
+  .necron-drawer{
+    position:fixed; top:0; right:0; bottom:0; width:min(86vw, 320px);
+    background:linear-gradient(180deg, #111416, #0b0e10); color:#e7ffee;
+    border-left:1px solid rgba(12,229,134,.22);
+    box-shadow:-12px 0 36px rgba(0,0,0,.35);
+    transform:translateX(100%); opacity:.98;
+    z-index:1105;
+    transition:transform .22s cubic-bezier(.2,.8,.2,1);
+    padding:18px 18px 28px;
+  }
+  .necron-drawer.is-open{ transform:translateX(0); }
+  .necron-nav{ display:flex; flex-direction:column; gap:.4rem; margin-top:8px; }
+  .necron-link{
+    padding:.6rem .75rem; border-radius:10px; color:#d8fbe9; text-decoration:none;
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.02);
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .necron-link:hover{ background:rgba(12,229,134,.10); border-color:rgba(12,229,134,.35); color:#fff; }
+  hr{ border:0; height:1px; background:rgba(255,255,255,.08); margin:.6rem 0; }
 </style>
+
+<script>
+  // Minimal, framework-free controller
+  (function(){
+    const btn   = document.getElementById('necron-toggle');
+    const drawer= document.getElementById('necron-drawer');
+    const scrim = document.getElementById('necron-scrim');
+
+    if(!btn || !drawer || !scrim) return;
+
+    const open = () => {
+      drawer.hidden = false;
+      scrim.hidden  = false;
+      requestAnimationFrame(() => {
+        drawer.classList.add('is-open');
+        scrim.classList.add('is-open');
+        btn.setAttribute('aria-expanded','true');
+        drawer.setAttribute('aria-hidden','false');
+      });
+      document.addEventListener('keydown', onEsc);
+    };
+
+    const close = () => {
+      drawer.classList.remove('is-open');
+      scrim.classList.remove('is-open');
+      btn.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+      const done = () => {
+        drawer.hidden = true; scrim.hidden = true;
+        drawer.removeEventListener('transitionend', done);
+      };
+      drawer.addEventListener('transitionend', done);
+      document.removeEventListener('keydown', onEsc);
+    };
+
+    const onEsc = (e) => { if(e.key === 'Escape') close(); };
+
+    btn.addEventListener('click', () => {
+      const isOpen = drawer.classList.contains('is-open');
+      isOpen ? close() : open();
+    });
+    scrim.addEventListener('click', close);
+    // close when clicking a link inside
+    drawer.addEventListener('click', (e) => {
+      const a = e.target.closest('a'); if(a) close();
+    });
+  })();
+</script>

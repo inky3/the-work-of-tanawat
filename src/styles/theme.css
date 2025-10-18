@@ -78,3 +78,37 @@ margin: 2rem 0;
 .text-muted {
     color: #0b8f62 !important;
 }
+
+/* Button */
+.nav-toggle{
+  position: fixed; top: 18px; right: 18px; z-index: 1100;
+  display: grid; place-items: center;
+  width: 56px; height: 42px; border: 0; border-radius: 12px;
+  background: #0CE586; color: #071114; box-shadow: 0 0 18px rgba(12,229,134,.45);
+  cursor: pointer;
+}
+.nav-toggle .bar{
+  display:block; width:24px; height:3px; border-radius:2px;
+  background:#fff; margin:3px 0; transition:transform .2s ease, opacity .2s ease;
+}
+.nav-toggle[aria-expanded="true"] .bar:nth-child(1){ transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+
+/* Drawer */
+.nav-drawer{
+  position: fixed; inset: 0 0 0 auto; width: 300px; max-width: 88vw;
+  background: rgba(10,12,14,.96); border-left:1px solid rgba(12,229,134,.18);
+  transform: translateX(100%); transition: transform .22s ease;
+  z-index: 1090; /* below toggle but above content */
+}
+.nav-drawer.is-open{ transform: translateX(0); }
+.drawer-nav{ display:flex; flex-direction:column; padding: 20px; gap: 12px; }
+.drawer-link{
+  color:#e6fff6; text-decoration:none; padding:10px 12px; border-radius:8px;
+  border:1px solid transparent;
+}
+.drawer-link:hover{ border-color: rgba(12,229,134,.35); background:rgba(12,229,134,.08); }
+
+/* Prevent body scroll when open */
+.no-scroll{ overflow:hidden; }
