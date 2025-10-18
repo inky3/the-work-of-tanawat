@@ -18,10 +18,14 @@ const abilities = [
 ];
 
 const highlights = [
-  { img: "img/blank.jpg", title: "3D Artworks",    role: "Hard-Surface / Environments", link: "/the-work-of-tanawat/3d" },
-  { img: "img/blank.jpg", title: "Animation & Motion", role: "Logo / FX / Compositing",   link: "/the-work-of-tanawat/animation" },
-  { img: "img/blank.jpg", title: "Painted Figures",    role: "OSL / Edge Highlights",     link: "/the-work-of-tanawat/warhammer" },
+  { img: "img/3D/alien_charecter.png", title: "3D Artworks",    role: "Hard-Surface / Environments", link: "/the-work-of-tanawat/3d" },
+  { title: "lip 65122525033", youtubeId: "wILrBpUjJFQ" },
+  { img: "img/Painting/Necrons/canoptek doomstalker_necrons(1).jpg", title: "Painted Figures",    role: "OSL / Edge Highlights", link: "/the-work-of-tanawat/warhammer" },
 ];
+
+const yt = (id: string) =>
+  `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&showinfo=0&controls=1`;
+
 ---
 
 <style>
@@ -119,11 +123,32 @@ const highlights = [
   </section>
 
   <!-- ===== HIGHLIGHTS (3-card showcase) ===== -->
-  <section id="highlights" class="panel p-4 p-lg-5">
-    <h2 class="mb-4">Highlights</h2>
-    <div class="row g-3 g-lg-4">
-      {highlights.map((h) => (
-        <div class="col-12 col-md-4">
+<section id="highlights" class="panel p-4 p-lg-5">
+  <h2 class="mb-4">Highlights</h2>
+  <div class="row g-3 g-lg-4">
+    {highlights.map((h) => (
+      <div class="col-12 col-md-4">
+
+        {h.youtubeId ? (
+          /* ==== VIDEO CARD ==== */
+          <div class="highlight-card highlight is-video">
+            <div class="video-wrap">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${h.youtubeId}?rel=0&modestbranding=1&showinfo=0&controls=1`}
+                title={h.title || "Video highlight"}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="highlight-body">
+              <h5 class="mb-1 text">{h.title || "Video"}</h5>
+              {h.role && <div class="role mb-2">{h.role}</div>}
+              <p class="lable mb-0">Watch the motion piece.</p>
+            </div>
+          </div>
+        ) : (
+          /* ==== IMAGE CARD ==== */
           <a class="highlight-card highlight" href={h.link}>
             <img class="highlight-media" src={h.img} alt={h.title} loading="lazy" />
             <div class="highlight-body">
@@ -132,12 +157,34 @@ const highlights = [
               <p class="lable mb-0">Tap to view the full collection.</p>
             </div>
           </a>
-        </div>
-      ))}
-    </div>
-  </section>
-</Layout>
+        )}
+
+      </div>
+    ))}
+  </div>
+</section>
+
 
 <style>
   .text { color: #f0f0f0; }
+
+  /* Keep your existing .highlight-card styles; add the video rules: */
+.is-video { display: block; text-decoration: none; }
+
+.video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;         /* keeps it responsive */
+  background: #000;
+  overflow: hidden;
+}
+.video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
 </style>

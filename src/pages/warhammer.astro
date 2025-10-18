@@ -1,167 +1,55 @@
 ---
 import Layout from "../components/Layout.astro";
 
-/** DATA — replace with real images of your painted miniatures later */
+/** HERO COPY */
 const hero = {
   title: "Warhammer Figures",
   subtitle: "Warhammer40K • Painting • Figures",
   blurb:
     "งานโมเดล Warhammer ทั้งหมดนี้ เป็นงานทำสีด้วยตัวเอง และหาเรเฟอร์เรนส์จาก Pinterest หรือจาก กลุ่ม Facebook Warhammer",
 };
+/** TAGS (must match figure.tag below) */
+const tags = ["All", "Necron", "Space Marine", "Tyranids"];
 
-const tags = ["All", "Necron", "Space-Marine", "Tyranids"];
+/** Base-safe + space-encoding helper (GitHub Pages friendly) */
+const base = import.meta.env.BASE_URL || "/";
+const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const encode = (p = "/") => url(p).replace(/ /g, "%20");
 
+/** GALLERY DATA — normalize tag casing to match the chips above */
 const figures = [
+  // ===== Necrons =====
+  { title: "Canoptek Doomstalker", img: encode("/img/Painting/Necrons/canoptek doomstalker_necrons(1).jpg"), tag: "Necron" },
+  { title: "Canoptek Doomstalker", img: encode("/img/Painting/Necrons/canoptek doomstalker_necrons.jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(1).jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(2).jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(3).jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(4).jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(5).jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(6).jpg"), tag: "Necron" },
+  { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron.jpg"),   tag: "Necron" },
+  { title: "Overlord",             img: encode("/img/Painting/Necrons/overlord_necrons.jpg"),          tag: "Necron" },
+  { title: "Skorpekh Destroyer",   img: encode("/img/Painting/Necrons/skorpekh destroyer token_necrons.jpg"), tag: "Necron" },
+  { title: "Skorpekh Destroyer",   img: encode("/img/Painting/Necrons/skorpekh destroyer_necrons(1).jpg"), tag: "Necron" },
+  { title: "Skorpekh Destroyer",   img: encode("/img/Painting/Necrons/skorpekh destroyer_necrons.jpg"),  tag: "Necron" },
 
-    /* ===== Necrons ===== */
+  // ===== Space Marine =====
+  { title: "Infernus Squad",       img: encode("/img/Painting/Space marine/infernus squad_space marines(1).jpg"), tag: "Space Marine" },
+  { title: "Infernus Squad",       img: encode("/img/Painting/Space marine/infernus squad_space marines(2).jpg"), tag: "Space Marine" },
+  { title: "Infernus Squad",       img: encode("/img/Painting/Space marine/infernus squad_space marines.jpg"),     tag: "Space Marine" },
+  { title: "Terminator Squad",     img: encode("/img/Painting/Space marine/terminatir squad_space marines(1).jpg"), tag: "Space Marine" },
+  { title: "Terminator Squad",     img: encode("/img/Painting/Space marine/terminatir squad_space marines(2).jpg"), tag: "Space Marine" },
+  { title: "Terminator Squad",     img: encode("/img/Painting/Space marine/terminatir squad_space marines(3).jpg"), tag: "Space Marine" },
+  { title: "Terminator Squad",     img: encode("/img/Painting/Space marine/terminatir squad_space marines.jpg"),    tag: "Space Marine" },
 
-  {
-    title: "canoptek-doomstalker",
-    img: "../img/Painting/Necrons/canoptek doomstalker_necrons(1).jpg",
-    tag: "necron",
-  },
-  {
-    title: "canoptek doomstalker",
-    img: "../img/Painting/Necrons/canoptek doomstalker_necrons.jpg",
-    tag: "necron",
-  },
-  {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron(1).jpg",
-    tag: "necron",
-  },
-  {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron(2).jpg",
-    tag: "necron",
-  },
-  {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron(3).jpg",
-    tag: "necron",
-  },
-  {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron(4).jpg",
-    tag: "necron",
-  },
-    {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron(5).jpg",
-    tag: "necron",
-  },
-    {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron(6).jpg",
-    tag: "necron",
-  },
-    {
-    title: "necron warriors",
-    img: "../img/Painting/Necrons/necron warriors_necron.jpg",
-    tag: "necron",
-  },
-    {
-    title: "overlord",
-    img: "../img/Painting/Necrons/overlord_necrons.jpg",
-    tag: "necron",
-  },
-    {
-    title: "skorpekh destroyer token",
-    img: "../img/Painting/Necrons/skorpekh destroyer token_necrons.jpg",
-    tag: "necron",
-  },
-    {
-    title: "skorpekh destroyer",
-    img: "../img/Painting/Necrons/skorpekh destroyer_necrons(1).jpg",
-    tag: "necron",
-  },
-    {
-    title: "skorpekh destroyer",
-    img: "../img/Painting/Necrons/skorpekh destroyer_necrons(1).jpg",
-    tag: "necron",
-  },
-    {
-    title: "skorpekh destroyer",
-    img: "../img/Painting/Necrons/skorpekh destroyer_necrons.jpg",
-    tag: "necron",
-  },
-  
-   /* ===== Spacae-Marine ===== */
-
-  {
-    title: "infernus squad",
-    img: "../img/Painting/Space marine/infernus squad_space marines(1).jpg",
-    tag: "Space-Marine",
-  },
-    {
-    title: "infernus squad",
-    img: "../img/Painting/Space marine/infernus squad_space marines(2).jpg",
-    tag: "Space-Marine",
-  },
-    {
-    title: "infernus squad",
-    img: "../img/Painting/Space marine/infernus squad_space marines.jpg",
-    tag: "Space-Marine",
-  },
-    {
-    title: "terminatir squad",
-    img: "../img/Painting/Space marine/terminatir squad_space marines(1).jpg",
-    tag: "Space-Marine",
-  },
-    {
-    title: "terminatir squad",
-    img: "../img/Painting/Space marine/terminatir squad_space marines(2).jpg",
-    tag: "Space-Marine",
-  },
-    {
-    title: "terminatir squad",
-    img: "../img/Painting/Space marine/terminatir squad_space marines(3).jpg",
-    tag: "Space-Marine",
-  },
-    {
-    title: "terminatir squad",
-    img: "../img/Painting/Space marine/terminatir squad_space marines.jpg",
-    tag: "Space-Marine",
-  },
-
-    /* ===== Tyranids ===== */
-
-  {
-    title: "41CA441B-F99E-4C48-98EA-38B5CE0D4ADF-69626-000030BFAAB9521E",
-    img: "../img/Painting/Tyranids/41CA441B-F99E-4C48-98EA-38B5CE0D4ADF-69626-000030BFAAB9521E.jpg",
-    tag: "Tyranids",
-  },
-  {
-    title: "termagants",
-    img: "../img/Painting/Tyranids/termagants_tyranids(1).jpg",
-    tag: "Tyranids",
-  },
-    {
-    title: "termagants",
-    img: "../img/Painting/Tyranids/termagants_tyranids(2).jpg",
-    tag: "Tyranids",
-  },
-    {
-    title: "termagants",
-    img: "../img/Painting/Tyranids/termagants_tyranids(3).jpg",
-    tag: "Tyranids",
-  },
-    {
-    title: "termagants",
-    img: "../img/Painting/Tyranids/termagants_tyranids(4).jpg",
-    tag: "Tyranids",
-  },
-    {
-    title: "termagants",
-    img: "../img/Painting/Tyranids/termagants_tyranids(5).jpg",
-    tag: "Tyranids",
-  },
-    {
-    title: "termagants",
-    img: "../img/Painting/Tyranids/termagants_tyranids.jpg",
-    tag: "Tyranids",
-  },
-
+  // ===== Tyranids =====
+  { title: "Hive Shot",            img: encode("/img/Painting/Tyranids/41CA441B-F99E-4C48-98EA-38B5CE0D4ADF-69626-000030BFAAB9521E.jpg"), tag: "Tyranids" },
+  { title: "Termagants",           img: encode("/img/Painting/Tyranids/termagants_tyranids(1).jpg"), tag: "Tyranids" },
+  { title: "Termagants",           img: encode("/img/Painting/Tyranids/termagants_tyranids(2).jpg"), tag: "Tyranids" },
+  { title: "Termagants",           img: encode("/img/Painting/Tyranids/termagants_tyranids(3).jpg"), tag: "Tyranids" },
+  { title: "Termagants",           img: encode("/img/Painting/Tyranids/termagants_tyranids(4).jpg"), tag: "Tyranids" },
+  { title: "Termagants",           img: encode("/img/Painting/Tyranids/termagants_tyranids(5).jpg"), tag: "Tyranids" },
+  { title: "Termagants",           img: encode("/img/Painting/Tyranids/termagants_tyranids.jpg"),    tag: "Tyranids" },
 ];
 ---
 
@@ -172,21 +60,23 @@ const figures = [
   .hero-art { position:relative; border-radius:16px; overflow:hidden; }
   .hero-art img { width:100%; height:100%; object-fit:cover; display:block; }
 
-  /* Tags */
+  /* Chips */
   .chip { display:inline-block; padding:.4rem .8rem; border-radius:999px;
-    border:1px solid rgba(12,229,134,.30); color:var(--text); margin:.25rem .35rem .25rem 0;
+    border:1px solid rgba(12,229,134,.30); color:var(--text); margin:.25rem .35rem .25rem 0; cursor:pointer;
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
   }
-  .chip.is-active { background: rgba(12,229,134,.18); border-color: rgba(12,229,134,.55); }
+  .chip.is-active { background: rgba(12,229,134,.18); border-color: rgba(12,229,134,.55); transform: translateY(-1px); }
 
-  /* Section bands */
+  /* Band (translucent section surface) */
   .band { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)); border-radius:16px; }
 
-  /* Figure cards (same necron-glow tone as abilities section) */
+  /* Cards */
   .card-necron-dark {
     background: rgba(16,18,20,.86);
     border:1px solid rgba(12,229,134,.18);
     border-radius:14px; overflow:hidden;
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    height: 100%;
   }
   .card-necron-dark:hover {
     transform: translateY(-3px);
@@ -194,17 +84,69 @@ const figures = [
     box-shadow: 0 0 24px rgba(12,229,134,.18);
   }
 
-  .media { width:100%; aspect-ratio: 4/3; object-fit:cover; display:block; opacity:.9; }
+  /* Make images FILL cards consistently */
+  .media {
+    width: 100%;
+    aspect-ratio: 9 / 16;     /* consistent tile shape */
+    object-fit: cover;       /* fill without distortion (crop edges) */
+    object-position: center; /* keep subject centered */
+    display: block;
+    opacity:.95;
+  }
+
   .body { padding:1rem 1.1rem 1.25rem; }
   .tag { font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:#3dffae; }
 
-  /* Paint recipe table (optional) */
-  .spec-table { width:100%; border-collapse:collapse; }
-  .spec-table th, .spec-table td { padding:.6rem .75rem; border-bottom:1px solid rgba(12,229,134,.18); }
-  .spec-table th { color:#0CE586; font-weight:600; }
+  /* Filter animation helpers */
+  .gallery-card { transition: transform .24s ease, opacity .24s ease; }
+  .is-hidden { opacity:0; transform: translateX(-24px); pointer-events:none; position:absolute; }
 
-  /* CTA */
-  .cta-wrap { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
+  /* === Table Card Style (like old 3D/Poster pages) === */
+  .spec {
+    background: var(--bg-elev, #111); /* dark panel background */
+    border: 1px solid rgba(12,229,134,.25);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(12,229,134,.12);
+    padding: 1.5rem;
+  }
+
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    color: #ddd;
+  }
+
+  .spec-table th {
+    color: #0CE586;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(12,229,134,.25);
+    padding: .75rem;
+  }
+
+  .spec-table td {
+    padding: .6rem .75rem;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    vertical-align: top;
+  }
+
+  .spec-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .spec-table th:first-child,
+  .spec-table td:first-child {
+    width: 25%;
+  }
+
+  h3.table-title {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #0CE586;
+    letter-spacing: 0.05em;
+  }
+
 </style>
 
 <Layout title={`Tanawat // ${hero.title}`} description={hero.subtitle}>
@@ -212,15 +154,17 @@ const figures = [
   <section class="panel p-4 p-lg-5 mb-5">
     <div class="hero-grid">
       <div class="hero-art">
-        <img src="../img/Painting/profile warhammer.jpg" alt="Warhammer hero placeholder" loading="lazy" />
+        <img src={encode("/img/Painting/profile warhammer.jpg")} alt="Warhammer hero placeholder" loading="lazy" />
       </div>
       <div>
         <h2 class="text-muted m-0">{hero.subtitle}</h2>
         <h1 class="necron-glow m-0">{hero.title}</h1>
         <p class="mt-3 mb-4">{hero.blurb}</p>
-        <div aria-label="Tags">
+
+        <!-- Filter Chips -->
+        <div id="warhammerFilter" aria-label="Tags">
           {tags.map((t, i) => (
-            <span class={`chip ${i === 0 ? "is-active" : ""}`}>{t}</span>
+            <button class={`chip ${i === 0 ? "is-active" : ""}`} data-filter={t}>{t}</button>
           ))}
         </div>
       </div>
@@ -229,15 +173,15 @@ const figures = [
 
   <!-- ===== FIGURE GALLERY ===== -->
   <section class="band panel p-4 p-lg-5 mb-5">
-    <div class="row g-3 g-lg-4">
+    <div class="row g-3 g-lg-4" id="figureGrid">
       {figures.map((f) => (
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-4 gallery-card" data-tag={f.tag}>
           <div class="card-necron-dark">
-            <img class="media" src={f.img} alt={f.title} loading="lazy" />
+            <img class="media" src={f.img} alt={f.title} loading="lazy" decoding="async" />
             <div class="body">
               <h5 class="mb-1">{f.title}</h5>
               <div class="tag mb-2">{f.tag}</div>
-              <p class="text-muted mb-0">{f.caption}</p>
+              <!-- optional caption -->
             </div>
           </div>
         </div>
@@ -245,6 +189,7 @@ const figures = [
     </div>
   </section>
 
+  <!-- ===== PAINTING RECIPE TABLE (OPTIONAL) ===== -->
   <!-- ===== PAINTING RECIPE TABLE (OPTIONAL) ===== -->
   <section class="panel p-4 p-lg-5 mb-5">
     <h3 class="mb-3">Painting Workflow</h3>
@@ -285,15 +230,44 @@ const figures = [
     </div>
   </section>
 
+
   <!-- ===== CTA ===== -->
   <section class="panel p-4 p-lg-5">
     <div class="band p-4" style="border-radius:12px;">
       <h3 class="mb-2">Showcase Request</h3>
-      <p class="text-muted mb-3">ถ้าต้องการดูงาน หรือ คุยเรื่องการลงสี Warhammer สามารถติดต่อมาทางนี้ได้เลย</p>
-      <div class="cta-wrap">
+      <p class="text-muted mb-3">ถ้าต้องการดูงาน หรือคุยเรื่องการลงสี Warhammer ติดต่อมาได้เลย</p>
+      <div class="d-flex flex-wrap gap-2 align-items-center">
         <a class="btn btn-necron" href="mailto:tanawat13870@gmail.com">Contact for Collaboration</a>
         <a class="btn btn-outline-light" style="border-color: rgba(12,229,134,.35)" href="/the-work-of-tanawat/3d">View 3D Works</a>
       </div>
     </div>
   </section>
+
+  <!-- Filter logic (tiny + guarded) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const chips = document.querySelectorAll("#warhammerFilter .chip");
+      const cards = document.querySelectorAll("#figureGrid .gallery-card");
+      if (!chips.length || !cards.length) return;
+
+      const applyFilter = (filter) => {
+        cards.forEach(card => {
+          const tag = card.getAttribute("data-tag");
+          const show = filter === "All" || tag === filter;
+          card.classList.toggle("is-hidden", !show);
+        });
+      };
+
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          chips.forEach(c => c.classList.remove("is-active"));
+          chip.classList.add("is-active");
+          applyFilter(chip.getAttribute("data-filter"));
+        });
+      });
+
+      // default = All
+      applyFilter("All");
+    });
+  </script>
 </Layout>
