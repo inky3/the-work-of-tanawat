@@ -115,7 +115,7 @@ margin: 2rem 0;
 
 .img-stack {
   width: 100%;
-  height: 400px; /* or whatever size your container should be */
+  height: 600px; /* or whatever size your container should be */
   border-radius: 16px;
   overflow: hidden; /* hides the parts of image that overflow */
 }
