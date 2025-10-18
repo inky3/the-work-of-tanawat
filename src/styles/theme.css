@@ -112,3 +112,18 @@ margin: 2rem 0;
 
 /* Prevent body scroll when open */
 .no-scroll{ overflow:hidden; }
+
+.img-stack {
+  width: 100%;
+  height: 400px; /* or whatever size your container should be */
+  border-radius: 16px;
+  overflow: hidden; /* hides the parts of image that overflow */
+}
+
+.img-stack img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* this is the key */
+  object-position: center; /* optional – centers the image */
+  display: block;
+}
