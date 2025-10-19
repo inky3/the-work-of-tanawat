@@ -127,3 +127,15 @@ margin: 2rem 0;
   object-position: center; /* optional – centers the image */
   display: block;
 }
+
+.ability-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.ability-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 22px rgba(12,229,134,.25);
+  border-color: rgba(12,229,134,.38);
+}
