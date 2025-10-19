@@ -6,6 +6,13 @@
 --necron:#0CE586; /* Core glow */
 --accent:#0AFF9D; /* Accent glow */
 --grid:#1F2326; /* Background grid */
+--chip-text:            #EAFDF4;        /* label color on dark BG */
+--chip-text-muted:      #A5EFD1;        /* disabled look (if you ever need) */
+--chip-border:          rgba(12,229,134,.55);
+--chip-border-hover:    rgba(12,229,134,.75);
+--chip-bg:              transparent;    /* default outlined */
+ --chip-bg-hover:        rgba(12,229,134,.08);
+--chip-bg-active:       rgba(12,229,134,.22); /* filled active */
 }
 
 

@@ -1,22 +1,19 @@
 ---
-import Layout from "../components/Layout.astro"; 
-// Import your main page layout that includes navbar, footer, Bootstrap, and Necron theme styling.
+import Layout from "../components/Layout.astro";
 
-/** DATA — replace with real assets later */
+/** HERO COPY */
 const hero = {
   title: "3D Artworks",
   subtitle: "Charecter • Environment • Objects",
   blurb:
     "มีความสามารถในการปั้น Model 3D ในโปรแกรม Blender และ Maya ในระดับพื้นฐาน และตอนนี้ก็กำลังสนใจการใช้ ZBrush ในการทำโมเดล",
 };
-// ↑ Defines content for the hero section — what title, subtitle, and short description to show on top of the page.
 
-const tags = ["All", "Charecter", "Diorama", "Objects"];
-// ↑ Category filters (currently visual only). You can later make them clickable filters via JavaScript.
+/** FILTER TAGS (must match artworks[].tag exactly) */
+const tags = [ "All", "Charecter", "Diorama", "Objects" ];
 
+/** GALLERY DATA */
 const artworks = [
-  // ↑ Array of your portfolio pieces for this gallery page.
-  // Each object represents one 3D artwork card with title, image, tag, and short caption.
   { title: "Alien", img: "../img/3D/alien_charecter.png", tag: "Charecter" },
   { title: "Monolith Reboot", img: "../img/3D/beach houes_diorama.jpg", tag: "Diorama" },
   { title: "Tesseract Node", img: "../img/3D/coffe_objects.png", tag: "Objects" },
@@ -30,110 +27,106 @@ const artworks = [
   { title: "Conduit Array", img: "../img/3D/monster_charecter.jpg", tag: "Charecter" },
   { title: "Conduit Array", img: "../img/3D/room_diorama.jpg", tag: "Diorama" },
 ];
-// ↑ You can later load this data from an external /data/artworksData.ts file if you prefer to separate content from code.
+
+const base = import.meta.env.BASE_URL || "/";
+const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const encode = (p = "/") => url(p).replace(/ /g, "%20");
 ---
 
 <style>
-  /* ===== LOCAL PAGE STYLE BLOCK =====
-     This CSS affects only this page and overrides or extends global theme styles.
-     It defines how your hero, cards, and table look visually.
-  */
+  /* ===== THEME TOKENS FOR CHIPS (outlined default, filled active) ===== */
+  :root{
+    --chip-text:            #EAFDF4;
+    --chip-border:          rgba(12,229,134,.55);
+    --chip-border-hover:    rgba(12,229,134,.75);
+    --chip-bg:              transparent;
+    --chip-bg-hover:        rgba(12,229,134,.08);
+    --chip-bg-active:       rgba(12,229,134,.22);
+  }
 
-  /* HERO (top banner section) */
+  /* ===== HERO ===== */
   .hero-grid { display:grid; grid-template-columns: 1.1fr 1fr; gap:2rem; align-items:center; }
   @media (max-width: 992px){ .hero-grid { grid-template-columns: 1fr; } }
-  /* ↑ Creates a 2-column layout for desktop (image left, text right), collapses to 1 column on mobile. */
-
   .hero-art { position:relative; border-radius:16px; overflow:hidden; }
   .hero-art img { width:100%; height:100%; object-fit:cover; display:block; }
-  /* ↑ Styles your hero image container — rounded edges, full coverage scaling. */
 
-  .hero-bar { position:absolute; top:0; bottom:0; width:16%;
-    background: linear-gradient(180deg, rgba(12,229,134,.28), rgba(12,229,134,.08));
-    border-left:1px solid rgba(12,229,134,.25); border-right:1px solid rgba(12,229,134,.12);
-    pointer-events:none;
+  /* ===== CHIPS ===== */
+  .chip{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:.48rem .98rem; margin:.25rem .35rem .25rem 0;
+    border-radius:999px; border:1px solid var(--chip-border);
+    background: var(--chip-bg); color: var(--chip-text);
+    cursor:pointer; user-select:none;
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
   }
-  /* ↑ Adds glowing green “Necron energy” vertical strips overlay — decorative only. */
-  .hero-bar.b1{ left:10%; } .hero-bar.b2{ left:32%; } .hero-bar.b3{ left:54%; }
-
-  /* FILTER CHIPS */
-  .chip { display:inline-block; padding:.4rem .8rem; border-radius:999px;
-    border:1px solid rgba(12,229,134,.30); color:var(--text); margin:.25rem .35rem .25rem 0;
+  .chip:hover{ background: var(--chip-bg-hover); border-color: var(--chip-border-hover); }
+  .chip:focus-visible{ outline:2px solid var(--chip-border-hover); outline-offset:2px; }
+  .chip.is-active{
+    background: var(--chip-bg-active);
+    border-color: var(--chip-border-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 4px rgba(12,229,134,.06);
   }
-  .chip.is-active { background: rgba(12,229,134,.18); border-color: rgba(12,229,134,.55); }
-  /* ↑ Styles category “chips” (small oval tags). The first one (“All”) uses .is-active for emphasis. */
 
-  /* SECTION BACKGROUND BAND */
+  /* ===== SECTION SURFACE ===== */
   .band { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)); border-radius:16px; }
-  /* ↑ Gives sections (gallery + pipeline) a translucent dark gradient background like your index abilities section. */
 
-  /* GALLERY CARD GRID */
+  /* ===== CARDS ===== */
   .card-necron-dark {
     background: rgba(16,18,20,.86);
     border:1px solid rgba(12,229,134,.18);
     border-radius:14px; overflow:hidden;
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    height:100%;
   }
   .card-necron-dark:hover {
     transform: translateY(-3px);
     border-color: rgba(12,229,134,.38);
     box-shadow: 0 0 24px rgba(12,229,134,.18);
   }
-  /* ↑ Each artwork card uses subtle glow/hover motion and emerald border styling. */
-
   .media { width:100%; aspect-ratio: 16/9; object-fit:cover; display:block; opacity:.9; }
   .body { padding:1rem 1.1rem 1.25rem; }
   .tag { font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:#3dffae; }
-  /* ↑ Sets proportions and font styling inside each card. */
 
-  /* TOOLING TABLE STYLES */
-  .spec-table { width:100%; border-collapse:collapse; }
-  .spec-table th, .spec-table td { padding:.6rem .75rem; border-bottom:1px solid rgba(12,229,134,.18); }
-  .spec-table th { color:#0CE586; font-weight:600; }
-  /* ↑ Defines look for the optional table at the bottom (lists tools and workflow). */
+  /* ===== FILTER ANIMATION HELPERS ===== */
+  .gallery-card{ transition: transform .24s ease, opacity .24s ease; }
+  .is-hidden{ opacity:0; transform: translateX(-24px); pointer-events:none; position:absolute; }
 </style>
 
 <Layout title={`Tanawat // ${hero.title}`} description={hero.subtitle}>
-  <!-- Wraps the entire page inside your global Layout component -->
-  
-  <!-- ===== HERO SECTION ===== -->
+  <!-- HERO -->
   <section class="panel p-4 p-lg-5 mb-5">
-    <!-- “panel” = your standard content box; Bootstrap padding classes (p-4, p-lg-5) handle spacing -->
     <div class="hero-grid">
       <div class="hero-art">
         <img src="../img/3D/profile 3d.png" alt="3D hero placeholder" loading="lazy" />
-        <!-- ↑ Replace this with your actual hero image, e.g., “img/artworks/hero.jpg” -->
       </div>
       <div>
-        <!-- Right-hand text block -->
         <h2 class="text-muted m-0">{hero.subtitle}</h2>
         <h1 class="necron-glow m-0">{hero.title}</h1>
         <p class="mt-3 mb-4">{hero.blurb}</p>
 
-        <div aria-label="Tags">
+        <!-- FILTER CHIPS (buttons with data-filter) -->
+        <div id="threeFilter" aria-label="Tags">
           {tags.map((t, i) => (
-            <span class={`chip ${i === 0 ? "is-active" : ""}`}>{t}</span>
-            // ↑ Loops over the “tags” array and renders each as a chip.
-            // The first chip (“All”) gets a highlight using the conditional class.
+            <button class={`chip ${i === 0 ? "is-active" : ""}`} data-filter={t} aria-pressed={i === 0 ? "true" : "false"}>
+              {t}
+            </button>
           ))}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== GALLERY SECTION ===== -->
+  <!-- GALLERY -->
   <section class="band panel p-4 p-lg-5 mb-5">
-    <!-- The translucent band container for all artwork cards -->
-    <div class="row g-3 g-lg-4">
+    <div class="row g-3 g-lg-4" id="threeGrid">
       {artworks.map((a) => (
-        // ↑ Loops through all artworks in the array and outputs one card per artwork.
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-4 gallery-card" data-tag={a.tag}>
           <div class="card-necron-dark">
             <img class="media" src={a.img} alt={a.title} loading="lazy" />
             <div class="body">
               <h5 class="mb-1">{a.title}</h5>
               <div class="tag mb-2">{a.tag}</div>
-              <p class="text-muted mb-0">{a.caption}</p>
             </div>
           </div>
         </div>
@@ -141,45 +134,40 @@ const artworks = [
     </div>
   </section>
 
-  <!-- ===== PIPELINE & TOOLS SECTION =====
-  <section class="panel p-4 p-lg-5">
-     Optional informational section for describing your production pipeline 
-    <h3 class="mb-3">Pipeline & Tools</h3>
-    <div class="band p-3" style="border-radius:12px;">
-      <div class="table-responsive">
-        <table class="spec-table">
-          <thead>
-            <tr>
-              <th>Stage</th>
-              <th>Tools</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-             Each row describes one part of your 3D workflow 
-            <tr>
-              <td>Modeling</td>
-              <td>Blender (HardOps, BoxCutter)</td>
-              <td>Non-destructive bevel + boolean workflow.</td>
-            </tr>
-            <tr>
-              <td>Shading</td>
-              <td>Blender (Cycles), Substance 3D</td>
-              <td>Metal/rough pipeline; emissive glyph masks.</td>
-            </tr>
-            <tr>
-              <td>Rendering</td>
-              <td>Cycles</td>
-              <td>Adaptive sampling, light path cuts.</td>
-            </tr>
-            <tr>
-              <td>Post</td>
-              <td>Photoshop / After Effects</td>
-              <td>Glows, depth fog, final grading.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section> -->
+  <!-- FILTER LOGIC -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const group = document.getElementById("threeFilter");
+      const chips = group?.querySelectorAll(".chip") ?? [];
+      const cards = document.querySelectorAll("#threeGrid .gallery-card");
+      if (!chips.length || !cards.length) return;
+
+      const activate = (el) => {
+        chips.forEach(c => { c.classList.remove("is-active"); c.setAttribute("aria-pressed","false"); });
+        el.classList.add("is-active");
+        el.setAttribute("aria-pressed","true");
+      };
+
+      const apply = (filter) => {
+        cards.forEach(card => {
+          const tag = card.getAttribute("data-tag");
+          const show = filter === "All" || tag === filter;
+          card.style.position = show ? "" : "absolute"; // reduce layout jump during transition
+          card.classList.toggle("is-hidden", !show);
+        });
+      };
+
+      chips.forEach(chip => {
+        chip.setAttribute("role","button");
+        chip.addEventListener("click", () => {
+          activate(chip);
+          apply(chip.getAttribute("data-filter"));
+        });
+      });
+
+      // default state
+      const current = [...chips].find(c => c.classList.contains("is-active")) || chips[0];
+      if (current) { activate(current); apply(current.getAttribute("data-filter")); }
+    });
+  </script>
 </Layout>
