@@ -19,7 +19,7 @@ const encode = (p = "/") => url(p).replace(/ /g, "%20");
 /** GALLERY DATA — normalize tag casing to match the chips above */
 const figures = [
   // ===== Necrons =====
-  { title: "Canoptek Doomstalker", img: encode("/img/Painting/Necrons/canoptek doomstalker_necrons(1).jpg"), tag: "Necron" },
+  { title: "Canoptek Doomstalker", img: encode("/img/Painting/Necrons/canoptek doomstalker_necrons(1).jpeg"), tag: "Necron" },
   { title: "Canoptek Doomstalker", img: encode("/img/Painting/Necrons/canoptek doomstalker_necrons.jpg"), tag: "Necron" },
   { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(1).jpg"), tag: "Necron" },
   { title: "Necron Warriors",      img: encode("/img/Painting/Necrons/necron warriors_necron(2).jpg"), tag: "Necron" },
@@ -108,7 +108,7 @@ const figures = [
   /* Make images FILL cards consistently */
   .media {
     width: 100%;
-    aspect-ratio: 9 / 16;     /* consistent tile shape */
+    aspect-ratio: 4 / 3;     /* consistent tile shape */
     object-fit: cover;       /* fill without distortion (crop edges) */
     object-position: center; /* keep subject centered */
     display: block;
