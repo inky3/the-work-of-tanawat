@@ -9,6 +9,10 @@ const hero = {
     "งาน animation ส่วนใหญ่มักเป็นงานรูปแบบฝึกเพื่อส่งอาจารย์ตอนเรียนอยู่ปี 3 แต่ก็มีงานบางส่วนที่ทำขึ้นมาเพื่อโชว์ใน portfolio ด้วยเช่นกัน",
 };
 
+const base = import.meta.env.BASE_URL || "/";
+const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const encode = (p = "/") => url(p).replace(/ /g, "%20");
+
 const tags = [];
 
 /** Use YouTube video IDs (the part after https://youtu.be/ or v=) */
@@ -73,7 +77,7 @@ const yt = (id: string) =>
   <section class="panel p-4 p-lg-5 mb-5">
     <div class="hero-grid">
       <div class="hero-art">
-        <img src="../img/blank.jpg" alt="Motion hero placeholder" loading="lazy" />
+        <img src={encode("/img/animation-motion/profile motion.jpg")} alt="Motion hero placeholder" loading="lazy" />
       </div>
       <div>
         <h2 class="text-muted m-0">{hero.subtitle}</h2>
